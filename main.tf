@@ -22,8 +22,45 @@ provider "proxmox" {
   pm_tls_insecure = true
 }
 
-resource "proxmox_vm_qemu" "vm_test_1" {
-    name = "vm-test-1"
+resource "proxmox_vm_qemu" "aleport" {
+    name        = "aleport"
+    description = "primary container vm"
     target_node = "gridania"
-    clone = "test"
+    onboot      = true
+    memory      = 16384
+    ipconfig0   = "ip=192.168.20.101/24"
+    cpu {
+        cores = 4
+    }
+    network {
+        id = 0
+        model = "virtio"
+        bridge = "vmbr0"
+        macaddr = "BC:24:11:03:58:0B"
+    }
+    disks {
+        scsi {
+            scsi0 {
+                disk {
+                    size = "100G"
+                    storage = "local-lvm"
+                }
+            }
+        }
+        ide {
+            ide0 {
+                cdrom {
+                    iso = "local:iso/nixos.iso"
+                }
+            }
+        }
+    }
+}
+
+module "deploy" {
+    source                 = "github.com/nix-community/nixos-anywhere//terraform/all-in-one"
+    nixos_system_attr      = ".#nixosConfigurations.aleport.config.system.build.toplevel"
+    nixos_partitioner_attr = ".#nixosConfigurations.aleport.config.system.build.diskoScript"
+    target_host            = "192.168.20.101"
+    instance_id            = "192.168.20.101"
 }

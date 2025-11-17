@@ -2,3 +2,5 @@
 .terraform
 .*.lock.hcl
 terraform.tfstate
+*.backup
+nix/flake.lock
