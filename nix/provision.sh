@@ -23,4 +23,4 @@ chmod 600 "$tmp/etc/ssh/ssh_host_ed25519_key"
 
 
 ## ALEPORT
-nix run github:nix-community/nixos-anywhere -- --flake ./#aleport --generate-hardware-config nixos-generate-config ./aleport/hardware-configuration.nix --extra-files "$tmp" --target-host root@192.168.20.101
+nix run github:nix-community/nixos-anywhere -- --flake ./#aleport --generate-hardware-config nixos-generate-config ./aleport/hardware-configuration.nix --extra-files "$tmp" --target-host root@192.168.20.102

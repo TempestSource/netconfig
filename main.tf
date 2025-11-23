@@ -28,7 +28,7 @@ resource "proxmox_vm_qemu" "aleport" {
     target_node = "gridania"
     onboot      = true
     memory      = 16384
-    ipconfig0   = "ip=192.168.20.101/24"
+    ipconfig0   = "ip=192.168.20.102/24"
     cpu {
         cores = 4
     }
@@ -44,6 +44,12 @@ resource "proxmox_vm_qemu" "aleport" {
                 disk {
                     size = "100G"
                     storage = "local-lvm"
+                }
+            }
+            scsi1 {
+                disk {
+                    size = "2000G"
+                    storage = "lancache"
                 }
             }
         }
