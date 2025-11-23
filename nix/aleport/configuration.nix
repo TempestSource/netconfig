@@ -9,6 +9,7 @@
   imports = [
     ./hardware-configuration.nix
     ./disk-config.nix
+    ./containers.nix
   ];
 
   boot.loader.grub.devices = [ "/dev/sda" ];
@@ -40,23 +41,12 @@
   networking.hostName = "aleport";
   networking.firewall.allowedTCPPorts = [
     22
-    6443
-    31193
+    25565
   ];
 
   services.openssh.enable = true;
-  services.k3s = {
-    enable = true;
-    role = "server";
-  };
   virtualisation.docker = {
     enable = true;
-  };
-  virtualisation.oci-containers = {
-    backend = "docker";
-    containers = {
-
-    };
   };
 
   time.timeZone = "US/Central";
