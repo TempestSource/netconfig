@@ -56,11 +56,3 @@ resource "proxmox_vm_qemu" "aleport" {
         }
     }
 }
-
-module "deploy" {
-    source                 = "github.com/nix-community/nixos-anywhere//terraform/all-in-one"
-    nixos_system_attr      = ".#nixosConfigurations.aleport.config.system.build.toplevel"
-    nixos_partitioner_attr = ".#nixosConfigurations.aleport.config.system.build.diskoScript"
-    target_host            = "192.168.20.101"
-    instance_id            = "192.168.20.101"
-}
