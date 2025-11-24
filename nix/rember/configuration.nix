@@ -24,15 +24,6 @@
       in
       [ "${automount_opts},credentials=/etc/nixos/smb-secrets,uid=1000" ];
   };
-  fileSystems."/mnt/anime" = {
-    device = "//192.168.20.5/Anime";
-    fsType = "cifs";
-    options =
-      let
-        automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-      in
-      [ "${automount_opts},credentials=/etc/nixos/smb-secrets,uid=1000" ];
-  };
 
   users.users.lain = {
     isNormalUser = true;
@@ -48,13 +39,12 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJC0H3bVsMxxn4Tw2CqXhPkR6rfz1rYRloJz7fLmlnBF lain@oblivion"
   ];
 
-  networking.hostName = "aleport";
+  networking.hostName = "rember";
   networking.firewall.allowedTCPPorts = [
     22
-    8111
-    25565
-    32400
+    53
   ];
+  networking.firewall.allowedUDPPorts = [ 53 ];
 
   services.openssh.enable = true;
   virtualisation.docker = {

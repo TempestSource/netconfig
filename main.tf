@@ -46,11 +46,40 @@ resource "proxmox_vm_qemu" "aleport" {
                     storage = "local-lvm"
                 }
             }
-            scsi1 {
-                disk {
-                    size = "2000G"
-                    storage = "lancache"
+        }
+        ide {
+            ide0 {
+                cdrom {
+                    iso = "local:iso/nixos.iso"
                 }
+            }
+        }
+    }
+}
+
+resource "proxmox_vm_qemu" "rember" {
+    name        = "rember"
+    description = "lancache"
+    target_node = "gridania"
+    onboot      = true
+    memory      = 8192
+    ipconfig0   = "ip=192.168.20.103/24"
+    cpu {
+        cores = 2
+    }
+    network {
+        id = 0
+        model = "virtio"
+        bridge = "vmbr0"
+        macaddr = "BC:24:11:C2:D1:66"
+    }
+    disks {
+        scsi {
+            scsi0 {
+              disk {
+                size = "2000G"
+                storage = "lancache"
+              }
             }
         }
         ide {

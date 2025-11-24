@@ -31,5 +31,15 @@
           ./secrets/default.nix
         ];
       };
+      nixosConfigurations.rember = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = inputs;
+        modules = [
+          disko.nixosModules.disko
+          ./rember/hardware-configuration.nix
+          ./rember/configuration.nix
+          ./secrets/default.nix
+        ];
+      };
     };
 }
