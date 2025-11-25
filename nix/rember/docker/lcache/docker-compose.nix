@@ -17,8 +17,8 @@
       "CACHE_INDEX_SIZE" = "500m";
       "CACHE_MAX_AGE" = "3650d";
       "CACHE_ROOT" = "/lc";
-      "DNS_BIND_IP" = "192.168.20.102";
-      "LANCACHE_IP" = "192.168.20.102";
+      "DNS_BIND_IP" = "192.168.20.103";
+      "LANCACHE_IP" = "192.168.20.103";
       "MIN_FREE_DISK" = "30g";
       "TZ" = "US/Central";
       "UPSTREAM_DNS" = "8.8.8.8";
@@ -61,8 +61,8 @@
       "CACHE_INDEX_SIZE" = "500m";
       "CACHE_MAX_AGE" = "3650d";
       "CACHE_ROOT" = "/lc";
-      "DNS_BIND_IP" = "192.168.20.102";
-      "LANCACHE_IP" = "192.168.20.102";
+      "DNS_BIND_IP" = "192.168.20.103";
+      "LANCACHE_IP" = "192.168.20.103";
       "MIN_FREE_DISK" = "30g";
       "TZ" = "US/Central";
       "UPSTREAM_DNS" = "8.8.8.8";
@@ -73,8 +73,8 @@
       "/logs:/data/logs:rw"
     ];
     ports = [
-      "8081:80/tcp"
-      "4443:443/tcp"
+      "80:80/tcp"
+      "443:443/tcp"
     ];
     log-driver = "journald";
     extraOptions = [

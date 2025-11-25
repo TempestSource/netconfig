@@ -47,6 +47,7 @@
   networking.firewall.allowedUDPPorts = [ 53 ];
 
   services.openssh.enable = true;
+  services.resolved.enable = false;
   virtualisation.docker = {
     enable = true;
   };
