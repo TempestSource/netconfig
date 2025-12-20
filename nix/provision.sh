@@ -23,9 +23,7 @@ chmod 600 "$tmp/etc/ssh/ssh_host_ed25519_key"
 
 
 ## ALEPORT
-### Main VM server
-nix run github:nix-community/nixos-anywhere -- --flake ./#aleport --generate-hardware-config nixos-generate-config ./aleport/hardware-configuration.nix --extra-files "$tmp" -i /home/lain/.ssh/id_docker --target-host root@192.168.20.102
+# nix run github:nix-community/nixos-anywhere -- --flake ./#aleport --generate-hardware-config nixos-generate-config ./aleport/hardware-configuration.nix --extra-files "$tmp" -i /home/lain/.ssh/id_docker --target-host root@192.168.20.102
 
 ## REMBER
-### Lan Cache Server, commented because I like having DNS
 # nix run github:nix-community/nixos-anywhere -- --flake ./#rember --generate-hardware-config nixos-generate-config ./rember/hardware-configuration.nix --extra-files "$tmp" -i /home/lain/.ssh/id_docker --target-host root@192.168.20.103

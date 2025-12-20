@@ -10,24 +10,34 @@
   virtualisation.oci-containers.backend = "docker";
 
   # Containers
-  virtualisation.oci-containers.containers."mc_au-mc_au" = {
+  virtualisation.oci-containers.containers."mc_au-mc" = {
     image = "itzg/minecraft-server:latest";
     environment = {
+      "ALLOW_FLIGHT" = "true";
+      "DIFFICULTY" = "2";
+      "ENABLE_WHITELIST" = "true";
       "EULA" = "TRUE";
+      "MEMORY" = "8192M";
+      "MOTD" = "Someone get Adam a Twisted Tea";
+      "RCON_CMDS_STARTUP" = "/scoreboard objectives add Deaths deathCount
+  /scoreboard objectives setdisplay list Deaths";
+      "TYPE" = "PAPER";
+      "TZ" = "America/Chicago";
+      "VERSION" = "LATEST";
     };
     volumes = [
-      "/mnt/nas/mc_au:/data:rw"
+      "/mnt/nas/mc_au2:/data:rw"
     ];
     ports = [
       "25565:25565/tcp"
     ];
     log-driver = "journald";
     extraOptions = [
-      "--network-alias=mc_au"
+      "--network-alias=mc"
       "--network=mc_au_default"
     ];
   };
-  systemd.services."docker-mc_au-mc_au" = {
+  systemd.services."docker-mc_au-mc" = {
     serviceConfig = {
       Restart = lib.mkOverride 90 "no";
     };

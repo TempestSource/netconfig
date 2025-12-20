@@ -10,6 +10,7 @@
     ./hardware-configuration.nix
     ./disk-config.nix
     ./containers.nix
+    ./plex.nix
   ];
 
   boot.loader.grub.devices = [ "/dev/sda" ];
@@ -51,6 +52,7 @@
   networking.hostName = "aleport";
   networking.firewall.allowedTCPPorts = [
     22
+    # 7777
     8111
     25565
     32400

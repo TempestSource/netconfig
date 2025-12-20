@@ -1,0 +1,18 @@
+---
+services:
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - VERSION=docker
+      - DOCKER_MODS=linuxserver/mods:universal-package-install
+      - INSTALL_PIP_PACKAGES=plexapi|requests
+      - INSTALL_PACKAGES=ffmpeg
+    volumes:
+      - /mnt/nas/plex:/config
+      - /mnt/anime:/anime
+    restart: unless-stopped

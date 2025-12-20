@@ -1,0 +1,19 @@
+---
+services:
+  shoko_server:
+    shm_size: 256m
+    image: ghcr.io/shokoanime/server:latest
+    container_name: shoko_server
+    environment:
+      - "PUID=1000"
+      - "PGID=100"
+      - "TZ=America/Chicago"
+    ports:
+      - "8111:8111"
+    volumes:
+      # - "/mnt/nas/shoko:/home/shoko/.shoko"
+      # Apparently sqlite doesn't like smb, and I'm not sure yet how to change the DB for this image
+      - "/shoko:/home/shoko/.shoko"
+      - "/mnt/anime:/mnt/anime"
+    restart: "no"
+   
