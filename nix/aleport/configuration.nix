@@ -14,6 +14,10 @@
   ];
 
   boot.loader.grub.devices = [ "/dev/sda" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   environment.systemPackages = [ pkgs.cifs-utils ];
   fileSystems."/mnt/nas" = {

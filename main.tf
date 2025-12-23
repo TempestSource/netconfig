@@ -91,3 +91,38 @@ resource "proxmox_vm_qemu" "rember" {
         }
     }
 }
+
+resource "proxmox_vm_qemu" "himitsu" {
+    name        = "himitsu"
+    description = "don't worry about it"
+    target_node = "gridania"
+    onboot      = true
+    memory      = 4096
+    ipconfig0   = "ip=192.168.20.104/24"
+    cpu {
+        cores = 2
+    }
+    network {
+        id = 0
+        model = "virtio"
+        bridge = "vmbr0"
+        macaddr = "BC:24:11:C8:F4:15"
+    }
+    disks {
+        scsi {
+            scsi0 {
+              disk {
+                size = "50G"
+                storage = "local-lvm"
+              }
+            }
+        }
+        ide {
+            ide0 {
+                cdrom {
+                    iso = "local:iso/alpine.iso"
+                }
+            }
+        }
+    }
+}
