@@ -22,9 +22,9 @@ provider "proxmox" {
   pm_tls_insecure = true
 }
 
-resource "proxmox_vm_qemu" "test1" {
-    name        = "test"
-    description = "test vm 1"
+resource "proxmox_vm_qemu" "kcontr1" {
+    name        = "kcontr1"
+    description = "Primary Kubernetes Controller"
     target_node = "bake"
     onboot      = true
     memory      = 2048
@@ -35,23 +35,23 @@ resource "proxmox_vm_qemu" "test1" {
         id = 0
         model = "virtio"
         bridge = "vmbr0"
-        macaddr = "BC:24:11:03:58:0B"
+        macaddr = "BC:24:11:1B:E4:3C"
     }
     disks {
         scsi {
             scsi0 {
                 disk {
-                    size = "10G"
+                    size = "20G"
                     storage = "local-lvm"
                 }
             }
         }
-        # ide {
-        #     ide0 {
-        #         cdrom {
-        #             iso = "local:iso/nixos.iso"
-        #         }
-        #     }
-        # }
+        ide {
+            ide0 {
+                cdrom {
+                    iso = "local:iso/deb13.iso"
+                }
+            }
+        }
     }
 }

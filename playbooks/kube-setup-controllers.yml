@@ -1,0 +1,45 @@
+---
+- name: Setup Kubernetes controllers
+  hosts: kcontr
+  become: true
+
+  tasks:
+    - name: Update controller hosts
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: yes
+
+    # Disable Swap
+    - name: Turn off swap
+      shell: |
+        swapoff -a
+    - name: Permanently disable swap
+      lineinfile:
+        path: /etc/fstab
+        regexp: '^.*swap.*$'
+        line: '#\0'
+        backrefs: yes
+
+    # Configure Firewall
+    - name: Install Firewall
+      ansible.builtin.apt:
+        name: ufw
+        state: present
+    - name: Configure Firewall
+      community.general.ufw:
+        default: deny
+        rule: allow
+        # 6443,2379:2380,10250:10252,10255,30000:32767
+        port: '{{item}}'
+        proto: tcp
+      loop:
+        - 22
+        - 6443
+        - 2379:2380
+        - 10250:10252
+        - 10255
+        - 30000:32767
+
+    - name: Enable Firewall
+      community.general.ufw:
+        state: enabled
