@@ -1,0 +1,21 @@
+---
+
+- name: Prepare common setup for all nodes
+  hosts: kube
+  become: yes
+  vars:
+    k8s_v: "1.31"
+  roles:
+    - kube-base
+
+- name: Prepare controller nodes
+  hosts: kcontr
+  become: yes
+  roles:
+    - controller
+
+- name: Prepare worker nodes
+  hosts: knode
+  become: yes
+  roles:
+    - worker

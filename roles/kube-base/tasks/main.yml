@@ -46,3 +46,6 @@
 
 - name: Configure and enable necessary services
   ansible.builtin.include_tasks: services.yml
+
+- name: Configure firewall
+  ansible.builtin.include_tasks: firewall.yml

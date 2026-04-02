@@ -16,3 +16,16 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
+
+- name: Start kubelet service
+  ansible.builtin.systemd:
+    name: kubelet
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: Enable firewall
+  ansible.builtin.systemd:
+    name: firewalld
+    state: restarted
+    enabled: yes

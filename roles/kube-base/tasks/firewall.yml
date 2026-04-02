@@ -1,6 +1,20 @@
 ---
 
-- name: Install firewalld
-  ansible.builtin.yum:
-    name: firewalld
-    state: present
+- name: Open TCP ports
+  ansible.builtin.firewalld:
+    port: "{{item}}/tcp"
+    permanent: yes
+    state: enabled
+  loop:
+    - 22
+    - 80
+    - 179
+    - 443
+    - 1025
+    - 5473
+
+- name: Calico UDP port
+  ansible.builtin.firewalld:
+    port: "4978/udp"
+    permanent: yes
+    state: enabled

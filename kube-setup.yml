@@ -1,9 +1,0 @@
----
-
-- name: Prepare system for kubernetes
-  hosts: kube
-  become: yes
-  vars:
-    k8s_v: "1.31"
-  roles:
-    - kube-base
