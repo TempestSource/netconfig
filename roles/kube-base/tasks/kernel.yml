@@ -1,0 +1,30 @@
+---
+
+- name: Load required kernel modules
+  community.general.modprobe:
+    name: '{{item}}'
+    state: present
+  loop:
+    - br_netfilter
+    - ip_vs
+    - ip_vs_rr
+    - ip_vs_wrr
+    - ip_vs_sh
+    - overlay
+
+- name: Load kernel modules on boot
+  ansible.builtin.template:
+    src: k8s_modules.conf
+    dest: /etc/modules-load.d/k8s_modules.conf
+
+- name: Enable network forwarding
+  ansible.posix.sysctl:
+    name: '{{ item.key }}'
+    value: '{{ item.value }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  ignore_errors: True
+  with_items:
+    - {key: net.bridge.bridge-nf-call-iptables, value: 1}
+    - {key: net.ipv4.ip_forward, value: 1}

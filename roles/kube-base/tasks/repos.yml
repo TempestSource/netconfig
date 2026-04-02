@@ -1,0 +1,11 @@
+---
+
+- name: Configure docker repository
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+
+- name: Configure kubernetes repository
+  ansible.builtin.template:
+    src: 'kube.repo.j2'
+    dest: /etc/yum.repos.d/kube.repo

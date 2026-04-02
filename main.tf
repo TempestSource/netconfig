@@ -27,9 +27,9 @@ resource "proxmox_vm_qemu" "kcontr1" {
     description = "Primary Kubernetes Controller"
     target_node = "bake"
     onboot      = true
-    memory      = 2048
+    memory      = 4096
     cpu {
-        cores = 1
+        cores = 2
     }
     network {
         id = 0
@@ -38,8 +38,8 @@ resource "proxmox_vm_qemu" "kcontr1" {
         macaddr = "BC:24:11:1B:E4:3C"
     }
     disks {
-        scsi {
-            scsi0 {
+        sata {
+            sata0 {
                 disk {
                     size = "20G"
                     storage = "local-lvm"
@@ -49,7 +49,41 @@ resource "proxmox_vm_qemu" "kcontr1" {
         ide {
             ide0 {
                 cdrom {
-                    iso = "local:iso/deb13.iso"
+                    iso = "local:iso/centos10.iso"
+                }
+            }
+        }
+    }
+}
+
+resource "proxmox_vm_qemu" "knode1" {
+    name        = "knode1"
+    description = "Kubernetes Worker Node 1"
+    target_node = "bake"
+    onboot      = true
+    memory      = 8192
+    cpu {
+        cores = 4
+    }
+    network {
+        id = 0
+        model = "virtio"
+        bridge = "vmbr0"
+        macaddr = "BC:24:11:1B:E4:47"
+    }
+    disks {
+        sata {
+            sata0 {
+                disk {
+                    size = "100G"
+                    storage = "local-lvm"
+                }
+            }
+        }
+        ide {
+            ide0 {
+                cdrom {
+                    iso = "local:iso/centos10.iso"
                 }
             }
         }
