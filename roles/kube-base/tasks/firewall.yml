@@ -1,5 +1,6 @@
 ---
 
+
 - name: Open TCP ports
   ansible.builtin.firewalld:
     port: "{{item}}/tcp"
@@ -12,9 +13,21 @@
     - 443
     - 1025
     - 5473
+    - 6443
+    - 10250
+    - 2379-2380
+    - 10251
+    - 10252
+    - 30000-32767
 
 - name: Calico UDP port
   ansible.builtin.firewalld:
     port: "4978/udp"
     permanent: yes
     state: enabled
+
+- name: Restart firewall
+  ansible.builtin.systemd:
+    name: firewalld
+    state: restarted
+    enabled: yes

@@ -27,6 +27,11 @@
   loop:
     - yum-utils
     - firewalld
+    - python3-firewall
+    - conntrack
+
+- name: Configure firewall
+  ansible.builtin.include_tasks: firewall.yml
 
 - name: Configure external repositories
   ansible.builtin.include_tasks: repos.yml
@@ -46,6 +51,3 @@
 
 - name: Configure and enable necessary services
   ansible.builtin.include_tasks: services.yml
-
-- name: Configure firewall
-  ansible.builtin.include_tasks: firewall.yml

@@ -1,4 +1,7 @@
 ---
+# This playbook is designed for CentOS Stream 10, although it should be
+# compatible with other distros using the yum package manager and 
+# easily modifiable to support other package managers.
 
 - name: Prepare common setup for all nodes
   hosts: kube
@@ -8,14 +11,14 @@
   roles:
     - kube-base
 
-- name: Prepare controller nodes
-  hosts: kcontr
-  become: yes
-  roles:
-    - controller
+# - name: Prepare controller nodes
+#   hosts: kcontr
+#   become: yes
+#   roles:
+#     - controller
 
-- name: Prepare worker nodes
-  hosts: knode
-  become: yes
-  roles:
-    - worker
+# - name: Prepare worker nodes
+#   hosts: knode
+#   become: yes
+#   roles:
+#     - worker
