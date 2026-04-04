@@ -1,0 +1,12 @@
+---
+- name: Join Kubernetes worker node to cluster
+  hosts: knode
+  become: true
+  tasks:
+    - name: Generate command to join node to cluster
+      command: kubeadm token create --print-join-command
+      delegate_to: "{{ groups['kcontr'][0] }}"
+      register: join_command
+
+    - name: Join node to cluster
+      command: "{{ join_command.stdout }}"
