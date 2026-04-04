@@ -1,0 +1,35 @@
+---
+
+# Configure containerd
+- name: Restore default contrainerd config
+  ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
+  run_once: false
+
+- name: Configure cgroup for containerd 
+  ansible.builtin.lineinfile:
+    path: /etc/containerd/config.toml
+    regexp: SystemdCgroup = false
+    line: SystemdCgroup = true
+    state: present
+    backup: yes
+
+
+- name: Start containerd service
+  ansible.builtin.systemd:
+    name: containerd
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: Start kubelet service
+  ansible.builtin.systemd:
+    name: kubelet
+    state: stopped
+    enabled: yes
+    daemon_reload: yes
+
+- name: Enable firewall
+  ansible.builtin.systemd:
+    name: firewalld
+    state: restarted
+    enabled: yes

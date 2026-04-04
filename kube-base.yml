@@ -1,0 +1,12 @@
+---
+# This playbook is designed for CentOS Stream 10, although it should be
+# compatible with other distros using the yum package manager and 
+# easily modifiable to support other package managers.
+
+- name: Prepare common setup for all nodes
+  hosts: kube
+  become: yes
+  vars:
+    k8s_v: "1.31"
+  roles:
+    - kube-base

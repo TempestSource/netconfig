@@ -1,0 +1,54 @@
+---
+- name: Update system
+  ansible.builtin.yum:
+    name: "*"
+    state: latest
+
+- name: Disable SELinux
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+
+- name: Turn off swap
+  command: swapoff -a
+  become: true
+
+- name: Prevent swap from reapplying
+  replace:
+    path: /etc/fstab
+    regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+    replace: '#\1\2\3swap\4'
+    backup: yes
+
+- name: Install necessary system packages
+  ansible.builtin.yum:
+    name: '{{item}}'
+    state: latest
+  loop:
+    - yum-utils
+    - firewalld
+    - python3-firewall
+    - python3-pip
+    - conntrack
+
+- name: Configure firewall
+  ansible.builtin.include_tasks: firewall.yml
+
+- name: Configure external repositories
+  ansible.builtin.include_tasks: repos.yml
+
+- name: Install packages for kubernetes and containerd
+  ansible.builtin.yum:
+    name: '{{item}}'
+    state: latest
+  loop:
+    - containerd.io
+    - kubelet
+    - kubeadm
+    - kubectl
+
+- name: Configure the netfilter kernel module
+  ansible.builtin.include_tasks: kernel.yml
+
+- name: Configure and enable necessary services
+  ansible.builtin.include_tasks: services.yml
