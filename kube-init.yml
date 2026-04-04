@@ -1,9 +1,9 @@
 ---
-- name: Kubernetes control plane initialization and configuration
+- name: kubernetes control plane initialization and configuration
   hosts: kcontr
   become: yes
   tasks:
-    - name: Initialize control plane
+    - name: initialize control plane
       ansible.builtin.shell:
         cmd: |
           kubeadm init \
@@ -11,7 +11,7 @@
           --control-plane-endpoint=192.168.20.30 \
           --pod-network-cidr=192.168.0.0/16 \
           --upload-certs
-    - name: Copy kubeconfig to user directory
+    - name: copy kubeconfig to user directory
       ansible.builtin.shell:
         cmd: |
           mkdir -p /home/lain/.kube
@@ -32,14 +32,31 @@
         url: https://raw.githubusercontent.com/projectcalico/calico/{{ calico_version }}/manifests/custom-resources.yaml
         dest: /tmp/custom-resources.yaml
 
-    - name: Install Calico operator
-      ansible.builtin.shell:
-        cmd: kubectl create -f /tmp/tigera-operator.yaml
+    - name: Install python kubernetes module
+      ansible.builtin.pip:
+        name: 
+          - kubernetes
+          - openshift
+        executable: pip3
+
+    - name: Apply operator manifest
+      kubernetes.core.k8s:
+        state: present
+        src: /tmp/tigera-operator.yaml
 
     - name: Wait for operator to spin up
-      ansible.builtin.pause:
-        seconds: 30
+      kubernetes.core.k8s:
+        api_version: apps/v1
+        kind: Deployment
+        name: tigera-operator
+        namespace: tigera-operator
+        wait: yes
+        wait_condition:
+          type: Available 
+          status: "True"
 
-    - name: Install Calico custom-resources
-      ansible.builtin.shell:
-        cmd: kubectl create -f /tmp/custom-resources.yaml
+    - name: Apply custom-resources
+      kubernetes.core.k8s:
+        state: present
+        src: /tmp/custom-resources.yaml
+

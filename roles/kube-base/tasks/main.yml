@@ -28,6 +28,7 @@
     - yum-utils
     - firewalld
     - python3-firewall
+    - python3-pip
     - conntrack
 
 - name: Configure firewall

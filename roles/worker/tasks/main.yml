@@ -1,9 +1,0 @@
----
-
-- name: Enable worker specific firewall ports
-  ansible.builtin.firewalld:
-    port: "{{item}}/tcp"
-    permanent: yes
-    state: enabled
-  loop:
-    - 30000-32767
