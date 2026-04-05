@@ -18,14 +18,14 @@ variable pm_api_token_secret {
 provider "proxmox" {
   pm_api_token_id = var.pm_api_token_id
   pm_api_token_secret = var.pm_api_token_secret
-  pm_api_url = "http://bake:8006/api2/json"
+  pm_api_url = "http://gridania:8006/api2/json"
   pm_tls_insecure = true
 }
 
 resource "proxmox_vm_qemu" "kcontr1" {
     name        = "kcontr1"
     description = "Primary Kubernetes Controller"
-    target_node = "bake"
+    target_node = "gridania"
     onboot      = true
     memory      = 4096
     cpu {
@@ -59,11 +59,11 @@ resource "proxmox_vm_qemu" "kcontr1" {
 resource "proxmox_vm_qemu" "knode1" {
     name        = "knode1"
     description = "Kubernetes Worker Node 1"
-    target_node = "bake"
+    target_node = "gridania"
     onboot      = true
-    memory      = 8192
+    memory      = 16384
     cpu {
-        cores = 4
+        cores = 8
     }
     network {
         id = 0
@@ -75,7 +75,7 @@ resource "proxmox_vm_qemu" "knode1" {
         sata {
             sata0 {
                 disk {
-                    size = "100G"
+                    size = "200G"
                     storage = "local-lvm"
                 }
             }
