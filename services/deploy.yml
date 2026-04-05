@@ -4,3 +4,5 @@
   hosts: kcontr
   roles:
     - dashboard
+    - prometheus
+    - grafana

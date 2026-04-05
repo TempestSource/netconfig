@@ -1,0 +1,24 @@
+# Connects graphana to prometheus backend
+# Change when A record updates
+
+apiVersion: v1 
+kind: ConfigMap 
+metadata:
+ name: grafana-datasources
+ namespace: grafana 
+data: 
+  prometheus.yaml: |-
+    { 
+        "apiVersion": 1, 
+        "datasources": [ 
+            { 
+               "access":"proxy", 
+                "editable": true, 
+                "name": "prometheus", 
+                "orgId": 1, 
+                "type": "prometheus", 
+                "url": "http://192.168.20.31:9090", 
+                "version": 1 
+            } 
+        ] 
+    }

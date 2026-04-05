@@ -1,0 +1,13 @@
+---
+- name: Create namespace
+  kubernetes.core.k8s:
+    state: present
+    template: namespace.yaml.j2
+- name: Link grafana to prometheus
+  kubernetes.core.k8s:
+    state: present
+    template: config-map.yaml.j2
+- name: Deploy grafana
+  kubernetes.core.k8s:
+    state: present
+    template: grafana.yaml.j2
