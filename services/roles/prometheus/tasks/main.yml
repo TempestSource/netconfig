@@ -1,0 +1,25 @@
+---
+- name: Create monitoring namespace
+  kubernetes.core.k8s:
+    state: present
+    template: namespace.yaml.j2
+- name: Deploy smb secret
+  kubernetes.core.k8s:
+    state: present
+    template: monitoring-secret.yaml.j2
+- name: Create persistent volume
+  kubernetes.core.k8s:
+    state: present
+    template: monitoring-vol.yaml.j2
+- name: Give prometheus access to cluster information
+  kubernetes.core.k8s:
+    state: present
+    template: cluster-access.yaml.j2
+- name: Declare monitoring jobs
+  kubernetes.core.k8s:
+    state: present
+    template: config-map.yaml.j2
+- name: Deploy prometheus manifest
+  kubernetes.core.k8s:
+    state: present
+    template: prometheus.yaml.j2

@@ -5,4 +5,4 @@ nix/result
 terraform.tfstate
 *.backup
 nix/flake.lock
-dashboard-secret.yaml.j2
+*-secret.yaml.j2
