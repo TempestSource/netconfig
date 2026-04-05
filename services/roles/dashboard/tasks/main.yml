@@ -1,0 +1,9 @@
+---
+- name: Add dashboard secret
+  kubernetes.core.k8s:
+    state: present
+    template: dashboard-secret.yaml.j2
+- name: Deploy dashboard manifest
+  kubernetes.core.k8s:
+    state: present
+    template: dashboard.yaml.j2
