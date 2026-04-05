@@ -1,0 +1,96 @@
+## In dashboard-secret.yaml.j2, a dashboard namespace is created,
+## and homarr-secret and smb-secret are defined
+
+# Create a persistent volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-dashboard-smb
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: smb
+  mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: akasha#dashboard#kube
+    volumeAttributes:
+      source: "//192.168.20.5/kube"
+    nodeStageSecretRef:
+      name: smb-secret
+      namespace: dashboard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-dashboard-smb
+  namespace: dashboard
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: pv-dashboard-smb
+  storageClassName: smb
+
+# Deploy the homarr dashboard
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homarr
+  namespace: dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homarr
+  template:
+    metadata:
+      labels:
+        app: homarr
+    spec:
+      containers:
+        - name: homarr
+          image: ghcr.io/homarr-labs/homarr:latest
+          ports:
+            - containerPort: 7575
+          volumeMounts:
+            - name: smb
+              mountPath: /app/data
+              readOnly: false
+              subPath: Dashboard
+          env:
+            # Stored as a kubernetes secret
+            - name: SECRET_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homarr-secret
+                  key: SECRET_ENCRYPTION_KEY
+      volumes:
+        - name: smb
+          persistentVolumeClaim:
+            claimName: pvc-dashboard-smb
+
+---
+# Allow external access to dashboard
+apiVersion: v1
+kind: Service
+metadata:
+  name: homarr
+  namespace: dashboard
+spec:
+  type: NodePort
+  selector:
+    app: homarr
+  ports:
+    - port: 80
+      targetPort: 7575
+      nodePort: 30075
