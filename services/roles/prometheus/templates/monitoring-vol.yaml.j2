@@ -1,0 +1,38 @@
+# Create a persistent volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-monitoring-smb
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: smb
+  mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: akasha#monitoring#kube
+    volumeAttributes:
+      source: "//192.168.20.5/kube"
+    nodeStageSecretRef:
+      name: smb-secret
+      namespace: monitoring
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-monitoring-smb
+  namespace: monitoring
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: pv-monitoring-smb
+  storageClassName: smb

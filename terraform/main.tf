@@ -27,7 +27,7 @@ resource "proxmox_vm_qemu" "kcontr1" {
     description = "Primary Kubernetes Controller"
     target_node = "gridania"
     onboot      = true
-    memory      = 4096
+    memory      = 6144
     cpu {
         cores = 2
     }

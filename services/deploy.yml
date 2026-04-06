@@ -1,0 +1,8 @@
+---
+
+- name: Deploy service manifests
+  hosts: kcontr
+  roles:
+    - dashboard
+    - prometheus
+    - grafana

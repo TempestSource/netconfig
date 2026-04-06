@@ -30,6 +30,7 @@
     - python3-firewall
     - python3-pip
     - conntrack
+    - cifs-utils
 
 - name: Configure firewall
   ansible.builtin.include_tasks: firewall.yml
