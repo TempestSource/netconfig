@@ -23,3 +23,7 @@
   kubernetes.core.k8s:
     state: present
     template: prometheus.yaml.j2
+- name: Deploy proxmox exporter
+  kubernetes.core.k8s:
+    state: present
+    template: proxmox-exporter.yaml.j2

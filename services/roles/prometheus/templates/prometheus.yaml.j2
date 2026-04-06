@@ -37,6 +37,7 @@ spec:
           mountPath: /etc/prometheus
         - name: prometheus-storage-volume
           mountPath: /prometheus
+          subVolume: Prometheus
       restartPolicy: Always
 
       volumes:

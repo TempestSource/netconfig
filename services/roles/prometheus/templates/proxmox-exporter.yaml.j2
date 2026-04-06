@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proxmox-exporter
+  namespace: monitoring
+  labels:
+    app: proxmox-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: proxmox-exporter
+  template:
+    metadata:
+      labels:
+        app: proxmox-exporter
+    spec:
+      containers:
+        - name: proxmox-exporter
+          image: prompve/prometheus-pve-exporter:latest
+          ports:
+            - containerPort: 9221
+          env:
+            - name: PVE_HOST
+              value: "https://gridania:8006"
+            - name: PVE_USER
+              value: "pve_exporter@pve"
+            - name: PVE_TOKEN_NAME
+              value: "pve_exporter"
+            - name: PVE_TOKEN_VALUE
+              valueFrom:
+                secretKeyRef:
+                  name: proxmox-exporter-secret
+                  key: PVE_TOKEN_VALUE
+            - name: PVE_VERIFY_SSL
+              value: "false"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxmox-exporter
+  namespace: monitoring
+  labels:
+    app: proxmox-exporter
+spec:
+  selector:
+    app: proxmox-exporter
+  ports:
+    - name: http
+      port: 9221
+      targetPort: 9221
