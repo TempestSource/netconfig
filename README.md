@@ -1,37 +1,38 @@
 # Network Configuration and Setup
 
-The code infrastructure behind my homelab network, centered around 2 main focuses:
+The automation infrastructure behind my homelab network, built around 3 core focuses:
 
 ## Automation
-- The network configuration should deploy mostly automatically and reliably
-- Running configurations to setup new resources should not break old resources
+- Minimize manual configuration and management
+- Save time and reduce risk of misconfiguration
 
 ## Modularity
-- Resources can be changed for other implementations without redesigning core infrastructure
-- Manually configured resources should not be removed or overwritten by automation
+- Resource independance and isolation
+- New services cannot break existing resources or corrupt existing data
+- Replacement without need for redesign
+
+## Availability
+- Ease the recovery process
+- Easy to provision replacements
+- Isolate failures from breaking other services
 
 # Virtual Machines
 
-Virtual machines are used to isolate services and resources
+Virtual machines isolate and abstract resources
 - Requires fewer phyiscal machines
-- Eases the creation and management of backups
-- Test environments can be freely created and destroyed without worry
-- Segments resources to prevent cascading failures
-
+- Small and easy to perform backups
+- Seperates services from affecting others
+- Easily modify available resources to a service
 
 ## Promox + Terraform
 
-Proxmox provides an easy to use interface to virtual machine management, as well as convenient features such as API token creation for management and monitoring.
+Proxmox provides management tools for virtual machines, such as
+- Convenient Web UI
+- External API with authentication
+- Simple to use resource management
 
-Terraform leverages this API to declaratively manage virtual machines without affecting unmanged virtual machines or destroying data.
-
-# Kubernetes / Containers
-
-Containers enable software to be further isolated and abstracted, providing a series of benefits such as:
-- Distro-agnostic software, allowing the use choose nearly any operating system 
-- Ease of installation
-- Declarative configurations
-
-Kubernetes leverages the benefits of containers and provides abstractions to increase container availability and scalability
-- Containers can be distributed across nodes, providing high-availabity in the event a node is unavailable
-- Containers can also be scaled across nodes to provide load balancing when a container's resources become strained
+Terraform leverages Proxmox's API to automate creation and management of virtual machines
+- Declare resources
+- Declare status (running, stopped)
+- Configure settings (autostart, boot order)
+- Change resources of existing virtual machines
