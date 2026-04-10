@@ -7,7 +7,7 @@ The automation infrastructure behind my homelab network, built around 3 core foc
 - Save time and reduce risk of misconfiguration
 
 ## Modularity
-- Resource independance and isolation
+- Resource independence and isolation
 - New services cannot break existing resources or corrupt existing data
 - Replacement without need for redesign
 
@@ -19,12 +19,12 @@ The automation infrastructure behind my homelab network, built around 3 core foc
 # Virtual Machines
 
 Virtual machines isolate and abstract resources
-- Requires fewer phyiscal machines
+- Requires fewer physical machines
 - Small and easy to perform backups
-- Seperates services from affecting others
+- Separates services from affecting others
 - Easily modify available resources to a service
 
-## Promox + Terraform
+## Proxmox + Terraform
 
 Proxmox provides management tools for virtual machines, such as
 - Convenient Web UI
